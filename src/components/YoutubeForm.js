@@ -1,10 +1,11 @@
 import React from "react";
-import { useFormik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 const initialValues = {
   name: "",
   email: "",
   channel: "",
+  color: "",
 };
 
 const onSubmit = (values) => {
@@ -18,63 +19,40 @@ const validationSchema = Yup.object({
 });
 
 function YoutubeForm() {
-  const formik = useFormik({
-    initialValues,
-    onSubmit,
-    // validate,
-    validationSchema,
-  });
-  console.log(formik.touched);
-
   return (
-    <div>
-      <form onSubmit={formik.handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
+      <Form>
         <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          onChange={formik.handleChange}
-          value={formik.values.name}
-          onBlur={formik.handleBlur}
-        ></input>
-        {formik.touched.name && formik.errors.name ? (
-          <p>{formik.errors.name}</p>
-        ) : null}
-        <br></br>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.email}
-        ></input>
-        {formik.touched.email && formik.errors.email ? (
-          <p>{formik.errors.email}</p>
-        ) : null}
+        <Field type="text" id="name" name="name"></Field>
+        <ErrorMessage name="name" />
 
+        <br></br>
+
+        <label htmlFor="email">Email</label>
+        <Field type="email" id="email" name="email"></Field>
+        <ErrorMessage name="email" />
         <br></br>
 
         <label htmlFor="channel">Channel</label>
-        <input
-          type="text"
-          id="channel"
-          name="channel"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.channel}
-        ></input>
-        {formik.touched.channel && formik.errors.channel ? (
-          <p>{formik.errors.channel}</p>
-        ) : null}
-
+        <Field type="text" id="channel" name="channel"></Field>
+        <ErrorMessage name="channel" />
         <br></br>
 
+        <Field name="color" as="select">
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+        </Field>
+        <ErrorMessage name="color" />
+
+        <br></br>
         <button type="submit">Submit</button>
-      </form>
-    </div>
+      </Form>
+    </Formik>
   );
 }
 
